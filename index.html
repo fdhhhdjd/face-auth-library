@@ -1,49 +1,1350 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Test Face Auth</title>
-</head>
-<body>
-    <h1>Test Face Auth Library</h1>
-    <button onclick="testFaceAuth()">Test Face Auth</button>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Auth Library - Demo & Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-soft: #818cf8;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-body: #020617;
+            --bg-card: #020617;
+            --bg-surface: rgba(15, 23, 42, 0.9);
+            --border: rgba(148, 163, 184, 0.35);
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+        }
 
-    <!-- Phải include TensorFlow trước -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"></script>
-    
-    <!-- Sau đó include thư viện của bạn -->
-    <script src="./dist/face-auth.min.js"></script>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <script>
-        async function testFaceAuth() {
-            try {
-                console.log('Testing FaceAuth...');
-                
-                // Tạo instance
-                const faceAuth = new FaceAuth();
-                
-                // Setup callbacks
-                faceAuth.config.onCapture = function(imageBlob) {
-                    alert('✅ Xác thực thành công!');
-                    console.log('Image captured:', imageBlob);
-                };
-                
-                faceAuth.config.onError = function(error) {
-                    alert('❌ Lỗi: ' + error.message);
-                };
-                
-                faceAuth.config.onClose = function() {
-                    console.log('Popup closed');
-                };
-                
-                // Mở popup
-                await faceAuth.open();
-                
-            } catch (error) {
-                alert('Lỗi: ' + error.message);
-                console.error(error);
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            /* TĂNG CỠ CHỮ CHUNG Ở ĐÂY */
+            font-size: 18px;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.14), transparent 60%),
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 55%),
+                #020617;
+            min-height: 100vh;
+        }
+
+        .app-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 24px 24px 40px;
+        }
+
+        /* HEADER / HERO */
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 28px 24px 24px;
+            margin-bottom: 24px;
+            border-radius: 20px;
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.22), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(248, 113, 113, 0.18), transparent 50%),
+                        rgba(15, 23, 42, 0.94);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(129, 140, 248, 0.16), transparent 30%, transparent 70%, rgba(56, 189, 248, 0.15));
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(129, 140, 248, 0.5);
+            color: #c7d2fe;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.25);
+        }
+
+        .header-title-block {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: clamp(2.4rem, 4.2vw, 3.1rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .header h1 span {
+            background: linear-gradient(120deg, #e5e7eb, #c4b5fd, #38bdf8);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .header h1 i {
+            font-size: 1.8rem;
+            color: #a5b4fc;
+        }
+
+        .header-subtitle {
+            font-size: 1.02rem;
+            color: var(--text-muted);
+            max-width: 780px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px dashed rgba(148, 163, 184, 0.5);
+            color: var(--text-muted);
+        }
+
+        .header-chip i {
+            color: #a5b4fc;
+        }
+
+        /* TABS */
+        .tabs-container {
+            margin-top: 18px;
+            margin-bottom: 0;
+            border-radius: 999px;
+            padding: 6px;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(51, 65, 85, 0.9);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .tab {
+            position: relative;
+            border: none;
+            border-radius: 999px;
+            padding: 9px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.22s ease;
+            white-space: nowrap;
+        }
+
+        .tab i {
+            font-size: 0.95rem;
+        }
+
+        .tab:hover {
+            color: #e5e7eb;
+        }
+
+        .tab.active {
+            color: #0f172a;
+            background: #e5e7eb;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.65);
+        }
+
+        /* CONTENT CARD */
+        .content-shell {
+            border-radius: 18px;
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.18), transparent 55%),
+                        rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(30, 64, 175, 0.6);
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.9);
+            padding: 24px;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            min-height: 420px;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .section-title i {
+            color: #a5b4fc;
+        }
+
+        .section-title span {
+            background: linear-gradient(120deg, #e5e7eb, #c7d2fe);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* DEMO GRID */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .theme-card {
+            position: relative;
+            border-radius: 16px;
+            padding: 16px;
+            background: radial-gradient(circle at top left, rgba(75, 85, 99, 0.28), transparent 60%),
+                        rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            cursor: pointer;
+            transition: all 0.22s ease;
+            overflow: hidden;
+        }
+
+        .theme-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(130deg, rgba(129, 140, 248, 0.13), transparent 40%, rgba(56, 189, 248, 0.08));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+
+        .theme-card:hover::before {
+            opacity: 1;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 38px rgba(15, 23, 42, 0.9);
+            border-color: rgba(129, 140, 248, 0.9);
+        }
+
+        .theme-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .theme-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #4f46e5, #22c55e);
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.8);
+        }
+
+        .theme-name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .theme-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .theme-preview {
+            border-radius: 12px;
+            height: 80px;
+            margin: 14px 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.35), transparent 45%),
+                        rgba(15, 23, 42, 0.96);
+        }
+
+        .theme-preview-badge {
+            padding: 4px 11px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            color: #e5e7eb;
+        }
+
+        .btn {
+            margin-top: 4px;
+            width: 100%;
+            border-radius: 999px;
+            padding: 9px 12px;
+            border: none;
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.5), transparent 65%),
+                        linear-gradient(135deg, #4f46e5, #22c55e);
+            color: #f9fafb;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.95);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.9);
+        }
+
+        /* STATUS BANNER */
+        .status {
+            margin-top: 6px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            color: var(--text-muted);
+        }
+
+        .status i {
+            color: #a5b4fc;
+        }
+
+        /* FEATURES SHORT */
+        .features-row {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .feature-chip {
+            border-radius: 12px;
+            padding: 11px 13px;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(51, 65, 85, 0.95);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.65), transparent 60%);
+            color: #e5e7eb;
+        }
+
+        /* CUSTOM COLORS TAB */
+        .two-columns {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 22px;
+            margin-top: 10px;
+        }
+
+        .column-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+        }
+
+        .color-picker {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 11px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(31, 41, 55, 0.9);
+        }
+
+        .color-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .color-label i {
+            color: #a5b4fc;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(55, 65, 81, 0.95);
+            background: #020617;
+            cursor: pointer;
+        }
+
+        .code-block {
+            margin-top: 8px;
+            padding: 13px 15px;
+            border-radius: 12px;
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), transparent 60%),
+                        #020617;
+            border: 1px solid rgba(31, 41, 55, 0.95);
+            font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
+            font-size: 0.85rem;
+            color: #e5e7eb;
+            overflow-x: auto;
+        }
+
+        .code-title {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .code-title i {
+            color: #a5b4fc;
+        }
+
+        .code-block pre {
+            white-space: pre;
+        }
+
+        /* USAGE & DOCS */
+        .stacked-section {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-top: 10px;
+        }
+
+        .section-card {
+            border-radius: 14px;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(31, 41, 55, 0.95);
+        }
+
+        .section-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+            font-weight: 500;
+        }
+
+        .section-card-header i {
+            color: #a5b4fc;
+        }
+
+        .section-card-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            .two-columns {
+                grid-template-columns: minmax(0, 1fr);
             }
         }
-    </script>
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 16px 12px 32px;
+            }
+
+            .header {
+                padding: 20px 16px 18px;
+            }
+
+            .header-subtitle {
+                max-width: 100%;
+            }
+
+            .tabs-container {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .tabs {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .tab {
+                flex: 1;
+                justify-content: center;
+                padding-inline: 8px;
+                font-size: 0.85rem;
+            }
+
+            .content-shell {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .theme-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .header h1 {
+                font-size: 2.1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(79, 70, 229, 0.9);
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 1);
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <div class="page-wrapper">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-top-row">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    <span>Face Recognition · Voice Guided · Ready for Production</span>
+                </div>
+            </div>
+
+            <div class="header-title-block">
+                <h1>
+                    <i class="fas fa-id-card-alt"></i>
+                    <span>Face Auth Library</span>
+                </h1>
+                <p class="header-subtitle">
+                    Thư viện xác thực khuôn mặt chạy trên trình duyệt, sử dụng TensorFlow.js &amp;
+                    Face Landmarks Detection. Hỗ trợ hướng dẫn bằng giọng nói tiếng Việt &amp;
+                    tuỳ chỉnh màu sắc UI linh hoạt.
+                </p>
+
+                <div class="header-actions">
+                    <div class="header-chip">
+                        <i class="fas fa-microphone"></i>
+                        Voice Guide · vi-VN
+                    </div>
+                    <div class="header-chip">
+                        <i class="fas fa-bolt"></i>
+                        100% Frontend · Không cần native SDK
+                    </div>
+                    <div class="header-chip">
+                        <i class="fas fa-palette"></i>
+                        Theming bằng JS Options
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="openTab(event, 'demo')">
+                            <i class="fas fa-play-circle"></i>
+                            Demo
+                        </button>
+                        <button class="tab" onclick="openTab(event, 'custom')">
+                            <i class="fas fa-palette"></i>
+                            Custom Colors
+                        </button>
+                        <button class="tab" onclick="openTab(event, 'usage')">
+                            <i class="fas fa-code"></i>
+                            Cách Dùng
+                        </button>
+                        <button class="tab" onclick="openTab(event, 'docs')">
+                            <i class="fas fa-book"></i>
+                            API Docs
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-shell">
+            <!-- DEMO TAB -->
+            <section id="demo" class="tab-content active">
+                <div class="section-title">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Live Demo</span>
+                </div>
+                <p class="section-subtitle">
+                    Chọn một theme bên dưới để mở popup xác thực khuôn mặt.
+                    Camera sẽ bật lên, hướng dẫn người dùng đưa khuôn mặt vào đúng vị trí, đủ sáng
+                    và tiến hành xác thực.
+                </p>
+
+                <div class="theme-grid">
+                    <!-- Default Theme -->
+                    <div class="theme-card" onclick="testDefault()">
+                        <div class="theme-header">
+                            <div class="theme-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div>
+                                <div class="theme-name">Mặc định · Blue Tech</div>
+                                <div class="theme-desc">Giao diện xanh dương hiện đại, phù hợp đa số hệ thống</div>
+                            </div>
+                        </div>
+                        <div class="theme-preview">
+                            <span>Popup Dark · Blue Border</span>
+                            <span class="theme-preview-badge">Default</span>
+                        </div>
+                        <button class="btn" type="button">
+                            <i class="fas fa-play"></i>
+                            Chạy Demo
+                        </button>
+                    </div>
+
+                    <!-- Dark Theme -->
+                    <div class="theme-card" onclick="testDarkTheme()">
+                        <div class="theme-header">
+                            <div class="theme-icon">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                            <div>
+                                <div class="theme-name">Dark · Indigo</div>
+                                <div class="theme-desc">Tone tím đậm, phù hợp app tài chính / bảo mật</div>
+                            </div>
+                        </div>
+                        <div class="theme-preview">
+                            <span>Popup Full Dark · Indigo Accent</span>
+                            <span class="theme-preview-badge">Dark Mode</span>
+                        </div>
+                        <button class="btn" type="button">
+                            <i class="fas fa-play"></i>
+                            Chạy Demo
+                        </button>
+                    </div>
+
+                    <!-- Light Theme -->
+                    <div class="theme-card" onclick="testLightTheme()">
+                        <div class="theme-header">
+                            <div class="theme-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div>
+                                <div class="theme-name">Light · Clean</div>
+                                <div class="theme-desc">Giao diện sáng, hợp trang quản trị hoặc SaaS</div>
+                            </div>
+                        </div>
+                        <div class="theme-preview">
+                            <span>Popup Light · Blue Accent</span>
+                            <span class="theme-preview-badge">Light</span>
+                        </div>
+                        <button class="btn" type="button">
+                            <i class="fas fa-play"></i>
+                            Chạy Demo
+                        </button>
+                    </div>
+
+                    <!-- Custom Theme -->
+                    <div class="theme-card" onclick="testCustomColors()">
+                        <div class="theme-header">
+                            <div class="theme-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <div class="theme-name">Custom · Pink & Green</div>
+                                <div class="theme-desc">Theme nổi bật cho sản phẩm B2C / marketing</div>
+                            </div>
+                        </div>
+                        <div class="theme-preview">
+                            <span>Popup Dark · Pink & Lime</span>
+                            <span class="theme-preview-badge">Custom</span>
+                        </div>
+                        <button class="btn" type="button">
+                            <i class="fas fa-play"></i>
+                            Chạy Demo
+                        </button>
+                    </div>
+                </div>
+
+                <div id="status" class="status">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Chọn một giao diện ở trên để bắt đầu demo xác thực khuôn mặt.</span>
+                </div>
+
+                <div class="features-row">
+                    <div class="feature-chip">
+                        <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                        <div>
+                            <div style="font-size:0.95rem;">AI trên trình duyệt</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">TensorFlow.js &amp; Face Landmarks</div>
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+                        <div>
+                            <div style="font-size:0.95rem;">Voice Guide tiếng Việt</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Hướng dẫn người dùng bằng giọng nói</div>
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="feature-icon"><i class="fas fa-arrows-to-circle"></i></div>
+                        <div>
+                            <div style="font-size:0.95rem;">Giữ mặt trong khung</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Chỉ chụp khi khuôn mặt chuẩn vị trí</div>
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div>
+                            <div style="font-size:0.95rem;">Responsive</div>
+                            <div style="font-size:0.82rem;color:var(--text-muted);">Chạy tốt trên mobile &amp; desktop</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CUSTOM COLORS TAB -->
+            <section id="custom" class="tab-content">
+                <div class="section-title">
+                    <i class="fas fa-palette"></i>
+                    <span>Custom Colors</span>
+                </div>
+                <p class="section-subtitle">
+                    Tùy chỉnh toàn bộ màu sắc của popup FaceAuth bằng options trong JavaScript.
+                    Bên trái chọn màu, bên phải là code mẫu.
+                </p>
+
+                <div class="two-columns">
+                    <div>
+                        <div class="column-title">🎨 Chọn màu trực tiếp</div>
+                        <div class="color-picker-grid">
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-paint-brush"></i> Màu chính (primaryColor)
+                                </label>
+                                <input type="color" id="primaryColor" value="#3a86ff" class="color-input">
+                            </div>
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-check-circle"></i> Màu thành công (successColor)
+                                </label>
+                                <input type="color" id="successColor" value="#2ed573" class="color-input">
+                            </div>
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-exclamation-triangle"></i> Màu cảnh báo (warningColor)
+                                </label>
+                                <input type="color" id="warningColor" value="#ffa502" class="color-input">
+                            </div>
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-times-circle"></i> Màu lỗi (errorColor)
+                                </label>
+                                <input type="color" id="errorColor" value="#ff4757" class="color-input">
+                            </div>
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-font"></i> Màu chữ chính (textColor)
+                                </label>
+                                <input type="color" id="textColor" value="#ffffff" class="color-input">
+                            </div>
+                            <div class="color-picker">
+                                <label class="color-label">
+                                    <i class="fas fa-text-height"></i> Màu chữ phụ (subtitleColor)
+                                </label>
+                                <input type="color" id="subtitleColor" value="#b0b0b0" class="color-input">
+                            </div>
+                        </div>
+
+                        <button class="btn" style="margin-top: 14px;" onclick="testCustomColor()" type="button">
+                            <i class="fas fa-play"></i>
+                            Chạy Demo với màu đang chọn
+                        </button>
+                    </div>
+
+                    <div>
+                        <div class="column-title">📋 Code JavaScript</div>
+                        <div class="code-block">
+                            <div class="code-title">
+                                <i class="fas fa-code"></i>
+                                Khởi tạo với màu custom
+                            </div>
+<pre><code>const faceAuth = new FaceAuth({
+  primaryColor: '#3a86ff',
+  successColor: '#2ed573',
+  warningColor: '#ffa502',
+  errorColor: '#ff4757',
+  textColor: '#ffffff',
+  subtitleColor: '#b0b0b0',
+  backgroundColor: '#1e1e1e',
+  overlayColor: 'rgba(0, 0, 0, 0.8)'
+});
+
+await faceAuth.open();</code></pre>
+                        </div>
+
+                        <div class="code-block" style="margin-top:10px;">
+                            <div class="code-title">
+                                <i class="fab fa-react"></i>
+                                React Example
+                            </div>
+<pre><code>function FaceAuthButton() {
+  const handleAuth = async () =&gt; {
+    const faceAuth = new FaceAuth({
+      primaryColor: '#3a86ff',
+      successColor: '#2ed573',
+      // ...
+    });
+
+    faceAuth.config.onCapture = (blob) =&gt; {
+      console.log('Captured:', blob);
+    };
+
+    await faceAuth.open();
+  };
+
+  return (
+    &lt;button onClick={handleAuth}&gt;
+      Xác Thực Khuôn Mặt
+    &lt;/button&gt;
+  );
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- USAGE TAB -->
+            <section id="usage" class="tab-content">
+                <div class="section-title">
+                    <i class="fas fa-code"></i>
+                    <span>Cách Dùng</span>
+                </div>
+                <p class="section-subtitle">
+                    Tích hợp FaceAuth vào dự án hiện có bằng CDN hoặc NPM. Dưới đây là các cách đơn giản nhất để dùng.
+                </p>
+
+                <div class="two-columns">
+                    <div class="stacked-section">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-globe"></i>
+                                <span>CDN (HTML thuần)</span>
+                            </div>
+                            <div class="section-card-text">
+                                Thêm 3 script vào cuối trang HTML của bạn (TensorFlow.js, face-landmarks-detection, face-auth-library).
+                            </div>
+                            <div class="code-block">
+<pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/face-auth-library@latest/dist/face-auth.min.js"&gt;&lt;/script&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fab fa-npm"></i>
+                                <span>NPM (SPA / Framework)</span>
+                            </div>
+                            <div class="section-card-text">
+                                Dùng cho React, Vue, Next.js, v.v...
+                            </div>
+                            <div class="code-block">
+<pre><code>npm install face-auth-library
+npm install @tensorflow/tfjs
+npm install @tensorflow-models/face-landmarks-detection</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-rocket"></i>
+                                <span>Quick Start · Vanilla JS</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>&lt;button onclick="authenticateUser()"&gt;
+  Xác Thực Khuôn Mặt
+&lt;/button&gt;
+
+&lt;script&gt;
+async function authenticateUser() {
+  try {
+    const faceAuth = new FaceAuth();
+
+    faceAuth.config.onCapture = (imageBlob) =&gt; {
+      console.log('OK:', imageBlob);
+      // uploadToServer(imageBlob);
+    };
+
+    faceAuth.config.onError = (error) =&gt; {
+      console.error('Lỗi:', error);
+    };
+
+    await faceAuth.open();
+  } catch (error) {
+    console.error('Init error:', error);
+  }
+}
+&lt;/script&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stacked-section">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fab fa-react"></i>
+                                <span>React Hook Example</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>import React, { useCallback } from 'react';
+
+function FaceAuthButton() {
+  const handleFaceAuth = useCallback(async () =&gt; {
+    const faceAuth = new FaceAuth({
+      detectionInterval: 150,
+      voiceEnabled: true
+    });
+
+    faceAuth.config.onCapture = (blob) =&gt; {
+      console.log('Authenticated:', blob);
+    };
+
+    faceAuth.config.onError = (error) =&gt; {
+      console.error('Error:', error);
+    };
+
+    await faceAuth.open();
+  }, []);
+
+  return (
+    &lt;button onClick={handleFaceAuth}&gt;
+      &lt;i className="fas fa-camera"&gt;&lt;/i&gt;
+      Xác Thực Khuôn Mặt
+    &lt;/button&gt;
+  );
+}
+
+export default FaceAuthButton;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DOCS TAB -->
+            <section id="docs" class="tab-content">
+                <div class="section-title">
+                    <i class="fas fa-book"></i>
+                    <span>API Documentation</span>
+                </div>
+                <p class="section-subtitle">
+                    Các options, method và callback quan trọng của FaceAuth.
+                </p>
+
+                <div class="two-columns">
+                    <div class="stacked-section">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-cog"></i>
+                                <span>Constructor Options</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>const faceAuth = new FaceAuth({
+  // Detection
+  detectionInterval: 200,
+  progressStep: 1,
+  progressIntervalTime: 100,
+
+  // Face size (tỉ lệ theo video)
+  minFaceSize: 0.3,
+  maxFaceSize: 0.6,
+
+  // Center threshold
+  centerThreshold: 0.15,
+  warningThreshold: 0.25,
+
+  // Colors
+  primaryColor: '#3a86ff',
+  successColor: '#2ed573',
+  warningColor: '#ffa502',
+  errorColor: '#ff4757',
+  textColor: '#ffffff',
+  subtitleColor: '#b0b0b0',
+  backgroundColor: '#1e1e1e',
+  overlayColor: 'rgba(0, 0, 0, 0.8)',
+
+  // Callbacks
+  onCapture: null,
+  onClose: null,
+  onError: null,
+  // voiceEnabled: true/false (nếu bạn thêm option này)
+});</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-play-circle"></i>
+                                <span>Methods</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>// Mở popup &amp; khởi tạo camera + model
+await faceAuth.open();
+
+// Đóng popup &amp; tắt camera
+faceAuth.close();
+
+// Cập nhật config trong runtime
+faceAuth.updateConfig({
+  progressStep: 2,
+  // ...
+});
+
+// Kiểm tra popup đang mở hay đã đóng
+const opened = faceAuth.isOpen();</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stacked-section">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-camera"></i>
+                                <span>Callback · onCapture</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>faceAuth.config.onCapture = (imageBlob) =&gt; {
+  // imageBlob là Blob ảnh JPEG
+  const formData = new FormData();
+  formData.append('faceImage', imageBlob, 'face.jpg');
+
+  fetch('/api/verify-face', {
+    method: 'POST',
+    body: formData,
+  });
+};</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Callback · onError</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>faceAuth.config.onError = (error) =&gt; {
+  console.error('FaceAuth error:', error.message);
+  // Ví dụ: hiện toast
+};</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-times"></i>
+                                <span>Callback · onClose</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>faceAuth.config.onClose = () =&gt; {
+  console.log('Popup đã đóng, camera &amp; model đã cleanup');
+};</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fas fa-magic"></i>
+                                <span>Advanced · Update Runtime Config</span>
+                            </div>
+                            <div class="code-block">
+<pre><code>const faceAuth = new FaceAuth();
+await faceAuth.open();
+
+// Sau 3s tăng tốc độ progress &amp; tắt voice
+setTimeout(() =&gt; {
+  faceAuth.updateConfig({
+    progressStep: 2,
+    voiceEnabled: false
+  });
+}, 3000);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"></script>
+<script src="./face-auth.js"></script>
+
+<script>
+    // TAB SWITCH
+    function openTab(evt, tabName) {
+        const contents = document.getElementsByClassName('tab-content');
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+
+        const tabs = document.getElementsByClassName('tab');
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+        }
+
+        document.getElementById(tabName).classList.add('active');
+        if (evt && evt.currentTarget) {
+            evt.currentTarget.classList.add('active');
+        }
+    }
+
+    function updateStatus(message) {
+        const el = document.getElementById('status');
+        if (el) {
+            el.innerHTML = message;
+        }
+    }
+
+    async function setupAndOpen(faceAuth, themeName) {
+        faceAuth.config.onCapture = function (imageBlob) {
+            updateStatus(
+                `<i class="fas fa-check-circle" style="color:${getComputedStyle(document.documentElement).getPropertyValue('--success') || '#10b981'}"></i>
+                 <span>${themeName} - Xác thực thành công!</span>`
+            );
+            setTimeout(() => {
+                updateStatus('<i class="fas fa-info-circle"></i><span> Chọn theme khác để test tiếp.</span>');
+            }, 3000);
+        };
+
+        faceAuth.config.onError = function (error) {
+            updateStatus(
+                `<i class="fas fa-times-circle" style="color:${getComputedStyle(document.documentElement).getPropertyValue('--error') || '#ef4444'}"></i>
+                 <span>${themeName} - Lỗi: ${error.message}</span>`
+            );
+            setTimeout(() => {
+                updateStatus('<i class="fas fa-info-circle"></i><span> Thử lại hoặc chọn theme khác.</span>');
+            }, 3000);
+        };
+
+        faceAuth.config.onClose = function () {
+            updateStatus('<i class="fas fa-lock"></i><span> Đã đóng popup · Camera đã tắt.</span>');
+        };
+
+        await faceAuth.open();
+        updateStatus('<i class="fas fa-user-check"></i><span> ' + themeName + ' - Đang chờ xác thực...</span>');
+    }
+
+    async function testDefault() {
+        updateStatus('<i class="fas fa-sync-alt fa-spin"></i><span> Đang khởi tạo theme mặc định...</span>');
+        try {
+            const faceAuth = new FaceAuth();
+            await setupAndOpen(faceAuth, 'Default Theme');
+        } catch (error) {
+            updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
+        }
+    }
+
+    async function testDarkTheme() {
+        updateStatus('<i class="fas fa-sync-alt fa-spin"></i><span> Đang khởi tạo Dark Theme...</span>');
+        try {
+            const faceAuth = new FaceAuth({
+                primaryColor: '#8b5cf6',
+                successColor: '#10b981',
+                warningColor: '#f59e0b',
+                errorColor: '#ef4444',
+                textColor: '#f8fafc',
+                subtitleColor: '#94a3b8',
+                backgroundColor: '#020617',
+                overlayColor: 'rgba(15, 23, 42, 0.92)'
+            });
+            await setupAndOpen(faceAuth, 'Dark Theme');
+        } catch (error) {
+            updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
+        }
+    }
+
+    async function testLightTheme() {
+        updateStatus('<i class="fas fa-sync-alt fa-spin"></i><span> Đang khởi tạo Light Theme...</span>');
+        try {
+            const faceAuth = new FaceAuth({
+                primaryColor: '#3b82f6',
+                successColor: '#10b981',
+                warningColor: '#f59e0b',
+                errorColor: '#ef4444',
+                textColor: '#0f172a',
+                subtitleColor: '#64748b',
+                backgroundColor: '#ffffff',
+                overlayColor: 'rgba(15, 23, 42, 0.7)'
+            });
+            await setupAndOpen(faceAuth, 'Light Theme');
+        } catch (error) {
+            updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
+        }
+    }
+
+    async function testCustomColors() {
+        updateStatus('<i class="fas fa-sync-alt fa-spin"></i><span> Đang khởi tạo Custom Theme...</span>');
+        try {
+            const faceAuth = new FaceAuth({
+                primaryColor: '#ec4899',
+                successColor: '#84cc16',
+                warningColor: '#f97316',
+                errorColor: '#dc2626',
+                textColor: '#f9fafb',
+                subtitleColor: '#d1d5db',
+                backgroundColor: '#020617',
+                overlayColor: 'rgba(15, 23, 42, 0.9)'
+            });
+            await setupAndOpen(faceAuth, 'Custom Theme');
+        } catch (error) {
+            updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
+        }
+    }
+
+    async function testCustomColor() {
+        updateStatus('<i class="fas fa-sync-alt fa-spin"></i><span> Đang khởi tạo với màu tuỳ chỉnh...</span>');
+        try {
+            const faceAuth = new FaceAuth({
+                primaryColor: document.getElementById('primaryColor').value,
+                successColor: document.getElementById('successColor').value,
+                warningColor: document.getElementById('warningColor').value,
+                errorColor: document.getElementById('errorColor').value,
+                textColor: document.getElementById('textColor').value,
+                subtitleColor: document.getElementById('subtitleColor').value,
+                backgroundColor: '#1e1e1e',
+                overlayColor: 'rgba(0, 0, 0, 0.85)'
+            });
+            await setupAndOpen(faceAuth, 'Custom Colors Picker');
+        } catch (error) {
+            updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
+        }
+    }
+</script>
 </body>
 </html>

@@ -10,6 +10,17 @@ class FaceAuth {
             maxFaceSize: 0.6,
             centerThreshold: 0.15,
             warningThreshold: 0.25,
+            
+            // CÁC OPTION MÀU SẮC MỚI
+            primaryColor: '#3a86ff',      // Màu chính (xanh dương)
+            successColor: '#2ed573',      // Màu thành công (xanh lá)
+            warningColor: '#ffa502',      // Màu cảnh báo (cam)
+            errorColor: '#ff4757',        // Màu lỗi (đỏ)
+            textColor: '#ffffff',         // Màu chữ chính
+            subtitleColor: '#b0b0b0',     // Màu chữ phụ
+            backgroundColor: '#1e1e1e',   // Màu nền
+            overlayColor: 'rgba(0, 0, 0, 0.8)', // Màu overlay
+            
             onCapture: null,
             onClose: null,
             onError: null,
@@ -34,6 +45,9 @@ class FaceAuth {
             isFullFace: false
         };
 
+        // Animation frame ID for cleanup
+        this.animationFrameId = null;
+
         // Check dependencies
         if (typeof faceLandmarksDetection === 'undefined') {
             throw new Error('FaceLandmarksDetection is required. Please include it before FaceAuth.');
@@ -48,6 +62,9 @@ class FaceAuth {
     }
 
     initDOM() {
+        // Luôn xóa DOM cũ trước khi tạo mới
+        this.removeDOM();
+
         // Create DOM structure if not exists
         if (!document.getElementById('faceAuthOverlay')) {
             this.createPopupStructure();
@@ -139,8 +156,12 @@ class FaceAuth {
     }
 
     injectStyles() {
-        if (document.getElementById('face-auth-styles')) return;
-
+        // Xóa CSS cũ nếu tồn tại
+        const oldStyles = document.getElementById('face-auth-styles');
+        if (oldStyles) {
+            oldStyles.remove();
+        }
+    
         const styles = `
             <style id="face-auth-styles">
                 .face-auth-overlay {
@@ -149,7 +170,7 @@ class FaceAuth {
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background-color: rgba(0, 0, 0, 0.8);
+                    background-color: ${this.config.overlayColor};
                     backdrop-filter: blur(12px);
                     display: none;
                     z-index: 10000;
@@ -165,7 +186,7 @@ class FaceAuth {
                     width: 95%;
                     max-width: 850px;
                     max-height: 90vh;
-                    background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+                    background: linear-gradient(145deg, ${this.config.backgroundColor}, #1a1a1a);
                     border-radius: 16px;
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
                     overflow: hidden;
@@ -189,13 +210,14 @@ class FaceAuth {
                 .face-auth-title {
                     font-size: 1.6rem;
                     font-weight: 700;
-                    background: linear-gradient(90deg, #3a86ff, #5e9fff);
+                    background: linear-gradient(90deg, ${this.config.primaryColor}, #5e9fff);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
+                    color: ${this.config.textColor};
                 }
                 .face-auth-subtitle {
                     font-size: 1rem;
-                    color: #b0b0b0;
+                    color: ${this.config.subtitleColor};
                     margin-top: 6px;
                 }
                 .face-auth-header-controls {
@@ -206,7 +228,7 @@ class FaceAuth {
                 .face-auth-close-btn {
                     background: rgba(255, 255, 255, 0.1);
                     border: none;
-                    color: #b0b0b0;
+                    color: ${this.config.subtitleColor};
                     font-size: 1.5rem;
                     cursor: pointer;
                     width: 40px;
@@ -219,13 +241,13 @@ class FaceAuth {
                 }
                 .face-auth-close-btn:hover {
                     background: rgba(255, 255, 255, 0.15);
-                    color: #ffffff;
+                    color: ${this.config.textColor};
                     transform: rotate(90deg);
                 }
                 .face-auth-voice-toggle {
                     background: rgba(255, 255, 255, 0.1);
                     border: none;
-                    color: #b0b0b0;
+                    color: ${this.config.subtitleColor};
                     width: 40px;
                     height: 40px;
                     border-radius: 50%;
@@ -237,10 +259,10 @@ class FaceAuth {
                 }
                 .face-auth-voice-toggle:hover {
                     background: rgba(255, 255, 255, 0.15);
-                    color: #ffffff;
+                    color: ${this.config.textColor};
                 }
                 .face-auth-voice-toggle.active {
-                    color: #3a86ff;
+                    color: ${this.config.primaryColor};
                     background: rgba(58, 134, 255, 0.2);
                 }
                 .face-auth-body {
@@ -284,28 +306,28 @@ class FaceAuth {
                     transform: translate(-50%, -50%);
                     width: 75%;
                     height: 75%;
-                    border: 3px solid #3a86ff;
+                    border: 3px solid ${this.config.primaryColor};
                     border-radius: 50%;
-                    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 20px rgba(58, 134, 255, 0.4);
+                    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 20px ${this.config.primaryColor}66;
                     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                 }
                 .face-auth-mask.good {
-                    border-color: #2ed573;
-                    box-shadow: 0 0 0 9999px rgba(46, 213, 115, 0.1), 0 0 30px rgba(46, 213, 115, 0.5);
+                    border-color: ${this.config.successColor};
+                    box-shadow: 0 0 0 9999px ${this.config.successColor}1a, 0 0 30px ${this.config.successColor}80;
                     animation: face-auth-pulse 2s infinite;
                 }
                 .face-auth-mask.warning {
-                    border-color: #ffa502;
-                    box-shadow: 0 0 0 9999px rgba(255, 165, 2, 0.1), 0 0 20px rgba(255, 165, 2, 0.4);
+                    border-color: ${this.config.warningColor};
+                    box-shadow: 0 0 0 9999px ${this.config.warningColor}1a, 0 0 20px ${this.config.warningColor}66;
                 }
                 .face-auth-mask.error {
-                    border-color: #ff4757;
-                    box-shadow: 0 0 0 9999px rgba(255, 71, 87, 0.1), 0 0 20px rgba(255, 71, 87, 0.4);
+                    border-color: ${this.config.errorColor};
+                    box-shadow: 0 0 0 9999px ${this.config.errorColor}1a, 0 0 20px ${this.config.errorColor}66;
                 }
                 @keyframes face-auth-pulse {
-                    0% { box-shadow: 0 0 0 9999px rgba(46, 213, 115, 0.1), 0 0 30px rgba(46, 213, 115, 0.5); }
-                    50% { box-shadow: 0 0 0 9999px rgba(46, 213, 115, 0.15), 0 0 40px rgba(46, 213, 115, 0.7); }
-                    100% { box-shadow: 0 0 0 9999px rgba(46, 213, 115, 0.1), 0 0 30px rgba(46, 213, 115, 0.5); }
+                    0% { box-shadow: 0 0 0 9999px ${this.config.successColor}1a, 0 0 30px ${this.config.successColor}80; }
+                    50% { box-shadow: 0 0 0 9999px ${this.config.successColor}26, 0 0 40px ${this.config.successColor}b3; }
+                    100% { box-shadow: 0 0 0 9999px ${this.config.successColor}1a, 0 0 30px ${this.config.successColor}80; }
                 }
                 .face-auth-sidebar {
                     flex: 1;
@@ -327,18 +349,18 @@ class FaceAuth {
                 }
                 .face-auth-instructions li {
                     margin-bottom: 12px;
-                    color: #b0b0b0;
+                    color: ${this.config.subtitleColor};
                     display: flex;
                     align-items: center;
                     transition: all 0.3s ease;
                 }
                 .face-auth-instructions li:hover {
-                    color: #ffffff;
+                    color: ${this.config.textColor};
                     transform: translateX(5px);
                 }
                 .face-auth-instructions li:before {
                     content: "•";
-                    color: #3a86ff;
+                    color: ${this.config.primaryColor};
                     font-weight: bold;
                     margin-right: 12px;
                     font-size: 1.4rem;
@@ -356,6 +378,7 @@ class FaceAuth {
                     min-height: 26px;
                     font-weight: 500;
                     transition: all 0.3s ease;
+                    color: ${this.config.textColor};
                 }
                 .face-auth-progress-container {
                     width: 100%;
@@ -371,7 +394,7 @@ class FaceAuth {
                 }
                 .face-auth-progress-fill {
                     height: 100%;
-                    background: linear-gradient(90deg, #3a86ff, #2ed573);
+                    background: linear-gradient(90deg, ${this.config.primaryColor}, ${this.config.successColor});
                     border-radius: 5px;
                     width: 0%;
                     transition: width 0.5s ease;
@@ -396,26 +419,26 @@ class FaceAuth {
                     text-align: center;
                     margin-top: 10px;
                     font-size: 1rem;
-                    color: #b0b0b0;
+                    color: ${this.config.subtitleColor};
                     font-weight: 500;
                 }
                 .face-auth-error-message {
-                    color: #ff4757;
+                    color: ${this.config.errorColor};
                     margin-top: 16px;
                     padding: 14px;
-                    background: rgba(255, 71, 87, 0.1);
+                    background: ${this.config.errorColor}1a;
                     border-radius: 12px;
                     display: none;
-                    border-left: 4px solid #ff4757;
+                    border-left: 4px solid ${this.config.errorColor};
                 }
                 .face-auth-success-message {
-                    color: #2ed573;
+                    color: ${this.config.successColor};
                     margin-top: 16px;
                     padding: 14px;
-                    background: rgba(46, 213, 115, 0.1);
+                    background: ${this.config.successColor}1a;
                     border-radius: 12px;
                     display: none;
-                    border-left: 4px solid #2ed573;
+                    border-left: 4px solid ${this.config.successColor};
                 }
                 .face-auth-loading-container {
                     display: flex;
@@ -425,12 +448,23 @@ class FaceAuth {
                     padding: 50px 20px;
                     text-align: center;
                 }
+                .face-auth-loading-container h3 {
+                    color: ${this.config.textColor};
+                    margin-bottom: 10px;
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                }
+                .face-auth-loading-container p {
+                    color: ${this.config.textColor};
+                    font-size: 1rem;
+                    margin: 0;
+                }
                 .face-auth-spinner {
                     width: 60px;
                     height: 60px;
-                    border: 4px solid rgba(58, 134, 255, 0.3);
+                    border: 4px solid ${this.config.primaryColor}4d;
                     border-radius: 50%;
-                    border-top-color: #3a86ff;
+                    border-top-color: ${this.config.primaryColor};
                     animation: face-auth-spin 1s linear infinite;
                     margin-bottom: 24px;
                 }
@@ -457,7 +491,7 @@ class FaceAuth {
                 }
             </style>
         `;
-
+    
         document.head.insertAdjacentHTML('beforeend', styles);
     }
 
@@ -480,37 +514,64 @@ class FaceAuth {
 
     initEventListeners() {
         if (this.closeBtn) {
-            this.closeBtn.addEventListener('click', () => this.close());
+            this.closeBtn.addEventListener('click', () => {
+                this.close(); // Gọi close() trực tiếp
+            });
         }
         if (this.voiceToggle) {
             this.voiceToggle.addEventListener('click', () => this.toggleVoice());
         }
         if (this.overlay) {
-            this.overlay.addEventListener('click', () => this.close());
+            this.overlay.addEventListener('click', (e) => {
+                if (e.target === this.overlay) {
+                    this.close(); // Gọi close() trực tiếp khi click overlay
+                }
+            });
         }
     }
 
     initVoice() {
-        if (!('speechSynthesis' in window)) return;
-        
+        // Nếu browser không hỗ trợ thì tắt luôn
+        if (!('speechSynthesis' in window)) {
+            console.warn('Speech synthesis not supported');
+            this.voiceEnabled = false;
+            if (this.voiceToggle) {
+                this.voiceToggle.style.display = 'none';
+            }
+            return;
+        }
+    
+        // Gọi trước 1 lần để "wake up" voice list (trick cho Chrome)
+        try {
+            window.speechSynthesis.getVoices();
+        } catch (e) {
+            console.warn('Cannot pre-load voices:', e);
+        }
+    
         const pickVoice = () => {
             const voices = window.speechSynthesis.getVoices();
             if (!voices || !voices.length) return;
-            this.viVoice = voices.find(v => v.lang.toLowerCase().startsWith('vi')) || 
-                           voices.find(v => v.lang.toLowerCase().startsWith('en')) || 
-                           voices[0];
+    
+            // Ưu tiên tiếng Việt
+            this.viVoice =
+                voices.find(v => v.lang.toLowerCase().startsWith('vi')) ||
+                voices.find(v => v.lang.toLowerCase().startsWith('en')) ||
+                voices[0];
+    
+            console.log('Selected voice:', this.viVoice && this.viVoice.name);
         };
-        
+    
         pickVoice();
         window.speechSynthesis.onvoiceschanged = pickVoice;
     }
-
+    
     async open() {
         // Reset state
         this.resetProgress();
         this.hideMessages();
         this.foreignObjectDetected = false;
         this.resetFaceValidation();
+        this.isSpeaking = false;
         
         // Show popup with animation
         this.overlay.style.display = 'block';
@@ -525,6 +586,11 @@ class FaceAuth {
         this.loadingModels.classList.remove('face-auth-hidden');
         this.cameraContent.classList.add('face-auth-hidden');
         
+        // ẨN NÚT CLOSE KHI ĐANG LOAD
+        if (this.closeBtn) {
+            this.closeBtn.style.display = 'none';
+        }
+        
         try {
             await this.initialize();
             
@@ -533,12 +599,23 @@ class FaceAuth {
             this.cameraContent.classList.remove('face-auth-hidden');
             this.cameraContent.classList.add('face-auth-fade-in');
             
+            // HIỆN LẠI NÚT CLOSE KHI LOAD XONG
+            if (this.closeBtn) {
+                this.closeBtn.style.display = 'flex';
+            }
+            
             // Voice guidance
             if (this.voiceEnabled) {
                 this.speak("Xin chào! Hãy đưa khuôn mặt của bạn vào khung hình");
             }
         } catch (error) {
             console.error('Error initializing camera:', error);
+            
+            // HIỆN LẠI NÚT CLOSE KHI CÓ LỖI
+            if (this.closeBtn) {
+                this.closeBtn.style.display = 'flex';
+            }
+            
             this.showError('Không thể khởi tạo camera. Vui lòng thử lại.');
             
             if (this.config.onError) {
@@ -548,55 +625,124 @@ class FaceAuth {
     }
 
     close() {
-        // Stop video stream
+        console.log('Closing FaceAuth...');
+                
+        // 1. Dừng speech synthesis đầu tiên
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            console.log('Speech synthesis cancelled');
+        }
+        
+        this.isSpeaking = false;
+        
+        // 2. Dừng camera stream
         if (this.stream) {
-            this.stream.getTracks().forEach(track => track.stop());
+            console.log('Stopping camera stream...');
+            this.stream.getTracks().forEach(track => {
+                console.log('Stopping track:', track.kind);
+                track.stop();
+            });
             this.stream = null;
         }
         
-        // Clear intervals
+        // 3. Clear video source
+        if (this.video) {
+            this.video.srcObject = null;
+        }
+        
+        // 4. Clear intervals và animation frames
         if (this.progressInterval) {
             clearInterval(this.progressInterval);
             this.progressInterval = null;
         }
         
-        if (this.detectionInterval) {
-            clearInterval(this.detectionInterval);
-            this.detectionInterval = null;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
         }
         
-        // Stop speech
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
+        // 5. Dispose TensorFlow.js model và memory
+        if (this.faceDetectionModel) {
+            console.log('Cleaning up face detection model...');
+            try {
+                // Đối với face-landmarks-detection, dispose model
+                if (typeof this.faceDetectionModel.dispose === 'function') {
+                    this.faceDetectionModel.dispose();
+                }
+                
+                // Clean up TensorFlow.js memory
+                if (typeof tf !== 'undefined') {
+                    tf.disposeVariables();
+                }
+                
+            } catch (error) {
+                console.warn('Model cleanup warning:', error.message);
+            }
+            this.faceDetectionModel = null;
         }
-        this.isSpeaking = false;
         
-        // Voice message when closing
-        if (this.voiceEnabled) {
-            this.speak("Bạn đã tắt camera");
-        }
-        
-        // Hide popup with animation
+        // 6. Ẩn popup với animation
         this.overlay.classList.remove('show');
         this.popup.classList.remove('show');
         
         setTimeout(() => {
             this.popup.style.display = 'none';
             this.overlay.style.display = 'none';
+            
+            // 7. Remove DOM elements sau khi animation
+            this.removeDOM();
         }, 400);
         
-        // Reset state
+        // 8. Reset state
         this.resetProgress();
         this.hideMessages();
         this.isCapturing = false;
-        this.faceMask.className = 'face-auth-mask';
+        this.isCentered = false;
         this.foreignObjectDetected = false;
         this.resetFaceValidation();
         
-        // Call onClose callback
+        // 9. Call onClose callback
         if (this.config.onClose) {
             this.config.onClose();
         }
+        
+        console.log('FaceAuth closed completely');
+    }
+
+    removeDOM() {
+        // Danh sách tất cả các elements cần xóa
+        const elementsToRemove = [
+            'faceAuthOverlay',
+            'faceAuthPopup', 
+            'faceAuthCanvas',
+            'face-auth-styles'
+        ];
+        
+        // Xóa từng element
+        elementsToRemove.forEach(id => {
+            const element = document.getElementById(id);
+            if (element && element.parentNode) {
+                element.remove();
+            }
+        });
+        
+        // Reset tất cả cached DOM elements về null
+        this.overlay = null;
+        this.popup = null;
+        this.canvas = null;
+        this.video = null;
+        this.closeBtn = null;
+        this.voiceToggle = null;
+        this.statusText = null;
+        this.progressText = null;
+        this.progressFill = null;
+        this.errorMessage = null;
+        this.successMessage = null;
+        this.loadingModels = null;
+        this.cameraContent = null;
+        this.faceMask = null;
+        
+        console.log('DOM elements removed completely');
     }
 
     async initialize() {
@@ -627,7 +773,11 @@ class FaceAuth {
                     shouldLoadIrisModel: false 
                 }
             );
+            
+            console.log('Face detection model loaded successfully');
+            
         } catch (error) {
+            console.error('Failed to load face detection model:', error);
             throw new Error('Không thể tải mô hình nhận diện khuôn mặt.');
         }
     }
@@ -672,13 +822,13 @@ class FaceAuth {
         
         const detectFaces = async () => {
             if (!this.stream || this.isCapturing) {
-                requestAnimationFrame(detectFaces);
+                this.animationFrameId = requestAnimationFrame(detectFaces);
                 return;
             }
             
             const now = Date.now();
             if (now - lastDetectionTime < this.config.detectionInterval) {
-                requestAnimationFrame(detectFaces);
+                this.animationFrameId = requestAnimationFrame(detectFaces);
                 return;
             }
             
@@ -754,10 +904,10 @@ class FaceAuth {
                 console.error('Face detection error:', error);
             }
             
-            requestAnimationFrame(detectFaces);
+            this.animationFrameId = requestAnimationFrame(detectFaces);
         };
         
-        detectFaces();
+        this.animationFrameId = requestAnimationFrame(detectFaces);
     }
 
     checkFaceCovered(face) {
@@ -953,39 +1103,75 @@ class FaceAuth {
 
     toggleVoice() {
         this.voiceEnabled = !this.voiceEnabled;
+    
         if (this.voiceToggle) {
             this.voiceToggle.classList.toggle('active', this.voiceEnabled);
         }
-        
-        if (this.voiceEnabled && !this.isSpeaking) {
+    
+        if (!this.voiceEnabled) {
+            // Tắt là dừng toàn bộ queue
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            this.isSpeaking = false;
+        } else {
+            // Bật lại thì nói 1 câu báo
             this.speak("Đã bật hướng dẫn bằng giọng nói");
         }
     }
+    
 
     speak(text) {
-        if (!this.voiceEnabled && !text.includes("Cảm ơn") && !text.includes("tắt camera")) return;
-        
-        if ('speechSynthesis' in window) {
+        // Nếu đang tắt tiếng thì thôi
+        if (!this.voiceEnabled) return;
+        if (!('speechSynthesis' in window)) return;
+    
+        // Hủy mọi câu đang queue để tránh bị kẹt, sau đó nói câu mới
+        try {
             window.speechSynthesis.cancel();
-            this.isSpeaking = true;
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'vi-VN';
-            utterance.rate = 1.2;
-            utterance.pitch = 1.0;
-            utterance.volume = 0.8;
-            
-            utterance.onend = () => {
-                this.isSpeaking = false;
-            };
-            
-            utterance.onerror = () => {
-                this.isSpeaking = false;
-            };
-            
-            window.speechSynthesis.speak(utterance);
+        } catch (e) {
+            console.warn('Cancel speech error:', e);
         }
+    
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'vi-VN';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.9;
+    
+        // Nếu lúc init đã chọn được voice tiếng Việt thì dùng
+        if (this.viVoice) {
+            utterance.voice = this.viVoice;
+            utterance.lang = this.viVoice.lang;
+        } else {
+            // Fallback: cố tìm lại 1 lần
+            const voices = window.speechSynthesis.getVoices();
+            const viVoice = voices.find(v =>
+                v.lang.toLowerCase().includes('vi') ||
+                v.name.toLowerCase().includes('vietnam')
+            );
+            if (viVoice) {
+                utterance.voice = viVoice;
+                utterance.lang = viVoice.lang;
+            }
+        }
+    
+        this.isSpeaking = true;
+    
+        utterance.onend = () => {
+            this.isSpeaking = false;
+            console.log('Speech finished:', text);
+        };
+    
+        utterance.onerror = (e) => {
+            this.isSpeaking = false;
+            console.error('Speech error:', e);
+        };
+    
+        console.log('Speaking:', text);
+        window.speechSynthesis.speak(utterance);
     }
+    
 
     onFaceDetectionResult(centered) {
         if (this.isCapturing || this.foreignObjectDetected || !this.faceValidationChecks.isFullFace) return;
@@ -1086,7 +1272,7 @@ class FaceAuth {
     }
 
     isOpen() {
-        return this.popup.style.display !== 'none';
+        return this.popup && this.popup.style.display !== 'none';
     }
 }
 
