@@ -5,15 +5,21 @@
   "main": "dist/face-auth.min.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack --mode development --watch"
+    "dev": "webpack --mode development --watch",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "face-authentication",
     "ai",
     "tensorflow",
     "face-detection",
-    "vietnam"
+    "vietnam",
+    "việt nam"
   ],
+  "homepage": "https://github.com/fdhhhdjd/face-auth-library#readme",
+  "bugs": {
+    "url": "https://github.com/fdhhhdjd/face-auth-library/issues"
+  },
   "author": "fdhhhdjd",
   "license": "MIT",
   "repository": {
@@ -27,5 +33,9 @@
   "devDependencies": {
     "webpack": "^5.103.0",
     "webpack-cli": "^6.0.1"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
