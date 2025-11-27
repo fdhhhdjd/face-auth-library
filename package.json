@@ -13,7 +13,7 @@
     "tensorflow",
     "face-detection"
   ],
-  "author": "Your Name",
+  "author": "Nguyen Tien Tai",
   "license": "MIT",
   "peerDependencies": {
     "@tensorflow/tfjs": "^3.18.0",
