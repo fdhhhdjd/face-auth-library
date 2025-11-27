@@ -1,0 +1,26 @@
+{
+  "name": "codde_web_khong_kho_face_auth",
+  "version": "1.0.0",
+  "description": "Thư viện xác thực khuôn mặt với AI",
+  "main": "face-auth.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch"
+  },
+  "keywords": [
+    "face-authentication",
+    "ai",
+    "tensorflow",
+    "face-detection"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "@tensorflow/tfjs": "^3.18.0",
+    "@tensorflow-models/face-landmarks-detection": "^0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fdhhhdjd/face-auth-library"
+  }
+}
