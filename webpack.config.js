@@ -7,8 +7,12 @@ module.exports = {
     filename: 'face-auth.min.js',
     library: 'FaceAuth',
     libraryTarget: 'umd',
-    // XÓA DÒNG NÀY: libraryExport: 'default',
-    globalObject: 'this'
+    globalObject: 'this',
+    clean: true
   },
-  mode: 'production'
+  mode: 'production',
+  externals: {
+    '@tensorflow/tfjs': 'tf',
+    '@tensorflow-models/face-landmarks-detection': 'faceLandmarksDetection'
+  }
 };
