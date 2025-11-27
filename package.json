@@ -1,8 +1,8 @@
 {
-  "name": "codde_web_khong_kho_face_auth",
+  "name": "face-auth-library",
   "version": "1.0.0",
-  "description": "Thư viện xác thực khuôn mặt với AI",
-  "main": "face-auth.js",
+  "description": "Thư viện xác thực khuôn mặt với TensorFlow.js và AI",
+  "main": "dist/face-auth.min.js",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development --watch"
@@ -11,16 +11,17 @@
     "face-authentication",
     "ai",
     "tensorflow",
-    "face-detection"
+    "face-detection",
+    "vietnam"
   ],
-  "author": "Nguyen Tien Tai",
+  "author": "fdhhhdjd",
   "license": "MIT",
-  "peerDependencies": {
-    "@tensorflow/tfjs": "^3.18.0",
-    "@tensorflow-models/face-landmarks-detection": "^0.0.1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fdhhhdjd/face-auth-library"
+  },
+  "peerDependencies": {
+    "@tensorflow/tfjs": "^3.18.0",
+    "@tensorflow-models/face-landmarks-detection": "^0.0.1"
   }
 }
