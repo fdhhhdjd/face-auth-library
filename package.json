@@ -1,11 +1,11 @@
 {
   "name": "face-auth-library",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Thư viện xác thực khuôn mặt với TensorFlow.js và AI",
   "main": "dist/face-auth.min.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development --watch",
+    "build": "webpack",
+    "dev": "webpack --mode=development",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

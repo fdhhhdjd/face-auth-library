@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Face Auth</title>
+</head>
+<body>
+    <h1>Test Face Auth Library</h1>
+    <button onclick="testFaceAuth()">Test Face Auth</button>
+
+    <!-- Phải include TensorFlow trước -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"></script>
+    
+    <!-- Sau đó include thư viện của bạn -->
+    <script src="./dist/face-auth.min.js"></script>
+
+    <script>
+        async function testFaceAuth() {
+            try {
+                console.log('Testing FaceAuth...');
+                
+                // Tạo instance
+                const faceAuth = new FaceAuth();
+                
+                // Setup callbacks
+                faceAuth.config.onCapture = function(imageBlob) {
+                    alert('✅ Xác thực thành công!');
+                    console.log('Image captured:', imageBlob);
+                };
+                
+                faceAuth.config.onError = function(error) {
+                    alert('❌ Lỗi: ' + error.message);
+                };
+                
+                faceAuth.config.onClose = function() {
+                    console.log('Popup closed');
+                };
+                
+                // Mở popup
+                await faceAuth.open();
+                
+            } catch (error) {
+                alert('Lỗi: ' + error.message);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
