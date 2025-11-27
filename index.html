@@ -116,6 +116,57 @@
             box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.25);
         }
 
+        /* BRAND LOGO BLOCK (GÓC PHẢI) */
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .brand-logo:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.8);
+            border-color: rgba(129, 140, 248, 0.9);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .brand-logo img {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 2px solid rgba(129, 140, 248, 0.8);
+        }
+
+        .brand-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .brand-handle {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .brand-handle i {
+            margin-right: 4px;
+            color: #f97316;
+        }
+
         .header-title-block {
             position: relative;
             z-index: 1;
@@ -167,6 +218,27 @@
             background: rgba(15, 23, 42, 0.9);
             border: 1px dashed rgba(148, 163, 184, 0.5);
             color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .header-chip.music-btn {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .header-chip.music-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .header-chip.music-btn.muted {
+            background: rgba(107, 114, 128, 0.2);
+            border: 1px solid rgba(107, 114, 128, 0.5);
         }
 
         .header-chip i {
@@ -665,66 +737,89 @@
     </style>
 </head>
 <body>
-<div class="app-shell">
-    <div class="page-wrapper">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="header-top-row">
-                <div class="badge">
-                    <span class="badge-dot"></span>
-                    <span>Face Recognition · Voice Guided · Ready for Production</span>
+    <div class="app-shell">
+        <div class="page-wrapper">
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-top-row">
+                    <div class="badge">
+                        <span class="badge-dot"></span>
+                        <span>Face Recognition · Voice Guided · Ready for Production</span>
+                    </div>
+    
+                    <!-- LOGO + TIKTOK HANDLE GÓC PHẢI -->
+                    <a
+                        href="https://www.tiktok.com/@code.web.khng.kh"
+                        class="brand-logo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://res.cloudinary.com/ecommerce2021/image/upload/v1764164353/dev_yxm1ii.jpg"
+                            alt="@code.web.khng.kh"
+                        />
+                        <div class="brand-logo-text">
+                            <span class="brand-title">Kênh TikTok</span>
+                            <span class="brand-handle">
+                                <i class="fab fa-tiktok"></i>@code.web.khng.kh
+                            </span>
+                        </div>
+                    </a>
                 </div>
-            </div>
-
-            <div class="header-title-block">
-                <h1>
-                    <i class="fas fa-id-card-alt"></i>
-                    <span>Face Auth Library</span>
-                </h1>
-                <p class="header-subtitle">
-                    Thư viện xác thực khuôn mặt chạy trên trình duyệt, sử dụng TensorFlow.js &amp;
-                    Face Landmarks Detection. Hỗ trợ hướng dẫn bằng giọng nói tiếng Việt &amp;
-                    tuỳ chỉnh màu sắc UI linh hoạt.
-                </p>
-
-                <div class="header-actions">
-                    <div class="header-chip">
-                        <i class="fas fa-microphone"></i>
-                        Voice Guide · vi-VN
-                    </div>
-                    <div class="header-chip">
-                        <i class="fas fa-bolt"></i>
-                        100% Frontend · No Native SDK
-                    </div>
-                    <div class="header-chip">
-                        <i class="fas fa-palette"></i>
-                        JS Theming
-                    </div>
-                </div>
-
-                <!-- TABS -->
-                <div class="tabs-container">
-                    <div class="tabs">
-                        <button class="tab active" onclick="openTab(event, 'demo')">
-                            <i class="fas fa-play-circle"></i>
-                            Demo
-                        </button>
-                        <button class="tab" onclick="openTab(event, 'custom')">
+    
+                <div class="header-title-block">
+                    <h1>
+                        <i class="fas fa-id-card-alt"></i>
+                        <span>Face Auth Library</span>
+                    </h1>
+                    <p class="header-subtitle">
+                        Thư viện xác thực khuôn mặt chạy trên trình duyệt, sử dụng TensorFlow.js &amp;
+                        Face Landmarks Detection. Hỗ trợ hướng dẫn bằng giọng nói tiếng Việt &amp;
+                        tuỳ chỉnh màu sắc UI linh hoạt.
+                    </p>
+    
+                    <div class="header-actions">
+                        <div class="header-chip music-btn" id="musicToggle">
+                            <i class="fas fa-volume-up"></i>
+                            Nhạc Nền
+                        </div>
+                        <div class="header-chip" onclick="testVoice()">
+                            <i class="fas fa-microphone"></i>
+                            Test Giọng Nói
+                        </div>
+                        <div class="header-chip">
+                            <i class="fas fa-bolt"></i>
+                            100% Frontend · No Native SDK
+                        </div>
+                        <div class="header-chip">
                             <i class="fas fa-palette"></i>
-                            Custom Colors
-                        </button>
-                        <button class="tab" onclick="openTab(event, 'usage')">
-                            <i class="fas fa-code"></i>
-                            Usage
-                        </button>
-                        <button class="tab" onclick="openTab(event, 'docs')">
-                            <i class="fas fa-book"></i>
-                            API Docs
-                        </button>
+                            JS Theming
+                        </div>
+                    </div>
+    
+                    <!-- TABS -->
+                    <div class="tabs-container">
+                        <div class="tabs">
+                            <button class="tab active" onclick="openTab(event, 'demo')">
+                                <i class="fas fa-play-circle"></i>
+                                Demo
+                            </button>
+                            <button class="tab" onclick="openTab(event, 'custom')">
+                                <i class="fas fa-palette"></i>
+                                Custom Colors
+                            </button>
+                            <button class="tab" onclick="openTab(event, 'usage')">
+                                <i class="fas fa-code"></i>
+                                Usage
+                            </button>
+                            <button class="tab" onclick="openTab(event, 'docs')">
+                                <i class="fas fa-book"></i>
+                                API Docs
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
 
         <!-- MAIN CONTENT -->
         <main class="content-shell">
@@ -775,7 +870,7 @@
                         </div>
                         <div class="theme-preview">
                             <span>Popup Full Dark · Indigo Accent</span>
-                            <span class="theme-preview-badge">Dark Mode</span>
+                            <span class="theme-preview-badge">Dark</span>
                         </div>
                         <button class="btn" type="button">
                             <i class="fas fa-play"></i>
@@ -1288,12 +1383,76 @@ setTimeout(() => {
     </div>
 </div>
 
+<!-- Audio Element -->
+<audio id="backgroundMusic" loop>
+    <source src="./music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"></script>
 <script src="./face-auth.js"></script>
 
 <script>
+    // NHẠC NỀN
+    let backgroundMusic = document.getElementById('backgroundMusic');
+    let isMusicPlaying = false;
+    let musicToggle = document.getElementById('musicToggle');
+
+    // Khởi tạo nhạc nền
+    function initBackgroundMusic() {
+        try {
+            backgroundMusic.volume = 0.1; // Âm lượng nhỏ
+            backgroundMusic.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicButton();
+            }).catch(error => {
+                console.log('Auto-play prevented:', error);
+                // Yêu cầu user interaction để play
+                musicToggle.innerHTML = '<i class="fas fa-play"></i> Bật Nhạc';
+                musicToggle.classList.add('muted');
+            });
+        } catch (error) {
+            console.log('Music initialization error:', error);
+        }
+    }
+
+    // Toggle nhạc nền
+    function toggleMusic() {
+    if (!backgroundMusic) return;
+
+    if (isMusicPlaying) {
+        // Đang bật -> tắt
+        backgroundMusic.pause();
+        isMusicPlaying = false;
+        updateMusicButton();
+    } else {
+        // Đang tắt -> bật
+        backgroundMusic.play()
+            .then(() => {
+                isMusicPlaying = true;
+                updateMusicButton();
+            })
+            .catch(error => {
+                console.log('Play failed:', error);
+                isMusicPlaying = false;
+                updateMusicButton();
+            });
+    }
+}
+
+    // Cập nhật nút nhạc
+    function updateMusicButton() {
+        if (isMusicPlaying) {
+            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i> Tắt Nhạc';
+            musicToggle.classList.remove('muted');
+        } else {
+            musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i> Bật Nhạc';
+            musicToggle.classList.add('muted');
+        }
+    }
+
     // TAB SWITCH
     function openTab(evt, tabName) {
         const contents = document.getElementsByClassName('tab-content');
@@ -1461,10 +1620,10 @@ setTimeout(() => {
         }
     }
 
-    // THÊM HÀM KIỂM TRA GIỌNG NÓI
+    // HÀM KIỂM TRA GIỌNG NÓI - CHỈ NÓI KHI BẤM NÚT
     function testVoice() {
         if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance("Xin chào! Chúc bạn một ngày tốt lành.");
+            const utterance = new SpeechSynthesisUtterance("Xin chào! Đây là kiểm tra giọng nói tiếng Việt trong FaceAuth. Giọng nói đang hoạt động tốt!");
             utterance.lang = 'vi-VN';
             utterance.rate = 1.0;
             utterance.volume = 0.8;
@@ -1480,33 +1639,34 @@ setTimeout(() => {
                 utterance.voice = viVoice;
             }
             
+            // Dừng mọi giọng nói trước đó
+            window.speechSynthesis.cancel();
+            
             window.speechSynthesis.speak(utterance);
             updateStatus('<i class="fas fa-volume-up"></i><span> Đang kiểm tra giọng nói...</span>');
+            
+            utterance.onend = () => {
+                updateStatus('<i class="fas fa-check-circle"></i><span> Kiểm tra giọng nói thành công!</span>');
+                setTimeout(() => {
+                    updateStatus('<i class="fas fa-info-circle"></i><span> Chọn theme để bắt đầu demo.</span>');
+                }, 3000);
+            };
+            
         } else {
             updateStatus('<i class="fas fa-volume-mute"></i><span> Trình duyệt không hỗ trợ giọng nói.</span>');
         }
     }
 
-    // TỰ ĐỘNG KIỂM TRA GIỌNG NÓI KHI TRANG LOAD
+    // TỰ ĐỘNG KHỞI TẠO KHI TRANG LOAD
     window.addEventListener('load', function() {
-        // Test giọng nói ngay khi trang load
-        setTimeout(testVoice, 1000);
+        // Khởi động nhạc nền
+        initBackgroundMusic();
         
-        // Thêm nút test giọng nói vào header
-        const headerActions = document.querySelector('.header-actions');
-        if (headerActions) {
-            const voiceTestBtn = document.createElement('div');
-            voiceTestBtn.className = 'header-chip';
-            voiceTestBtn.style.cursor = 'pointer';
-            voiceTestBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-            voiceTestBtn.style.border = '1px solid rgba(34, 197, 94, 0.5)';
-            voiceTestBtn.innerHTML = `
-                <i class="fas fa-volume-up"></i>
-                Test Giọng Nói
-            `;
-            voiceTestBtn.onclick = testVoice;
-            headerActions.appendChild(voiceTestBtn);
-        }
+        // Thêm event listener cho nút nhạc
+        musicToggle.addEventListener('click', toggleMusic);
+        
+        // KHÔNG tự động test giọng nói khi load trang
+        updateStatus('<i class="fas fa-info-circle"></i><span> Chọn theme để bắt đầu demo hoặc bấm "Test Giọng Nói" để kiểm tra.</span>');
     });
 </script>
 </body>
