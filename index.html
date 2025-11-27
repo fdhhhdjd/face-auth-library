@@ -31,13 +31,12 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            /* TĂNG CỠ CHỮ CHUNG Ở ĐÂY */
-            font-size: 18px;
+            font-size: 16px;
         }
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             color: var(--text-main);
             background:
                 radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 55%),
@@ -55,9 +54,9 @@
 
         .page-wrapper {
             width: 100%;
-            max-width: 100%;
-            margin: 0;
-            padding: 24px 24px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         /* HEADER / HERO */
@@ -65,8 +64,8 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding: 28px 24px 24px;
-            margin-bottom: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
             border-radius: 20px;
             background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.22), transparent 55%),
                         radial-gradient(circle at bottom right, rgba(248, 113, 113, 0.18), transparent 50%),
@@ -99,9 +98,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 12px;
+            padding: 8px 16px;
             border-radius: 999px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             letter-spacing: 0.04em;
             text-transform: uppercase;
             background: rgba(15, 23, 42, 0.92);
@@ -123,7 +122,7 @@
         }
 
         .header h1 {
-            font-size: clamp(2.4rem, 4.2vw, 3.1rem);
+            font-size: 2.8rem;
             font-weight: 800;
             letter-spacing: -0.04em;
             display: flex;
@@ -144,16 +143,17 @@
         }
 
         .header-subtitle {
-            font-size: 1.02rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 780px;
+            max-width: 800px;
+            line-height: 1.6;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
@@ -161,7 +161,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 11px;
+            padding: 8px 16px;
             border-radius: 999px;
             font-size: 0.85rem;
             background: rgba(15, 23, 42, 0.9);
@@ -175,10 +175,10 @@
 
         /* TABS */
         .tabs-container {
-            margin-top: 18px;
+            margin-top: 20px;
             margin-bottom: 0;
-            border-radius: 999px;
-            padding: 6px;
+            border-radius: 16px;
+            padding: 8px;
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid rgba(51, 65, 85, 0.9);
             display: inline-flex;
@@ -196,9 +196,9 @@
         .tab {
             position: relative;
             border: none;
-            border-radius: 999px;
-            padding: 9px 18px;
-            font-size: 0.95rem;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 0.9rem;
             font-weight: 500;
             letter-spacing: 0.02em;
             display: inline-flex;
@@ -212,11 +212,12 @@
         }
 
         .tab i {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .tab:hover {
             color: #e5e7eb;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .tab.active {
@@ -227,18 +228,18 @@
 
         /* CONTENT CARD */
         .content-shell {
-            border-radius: 18px;
+            border-radius: 20px;
             background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.18), transparent 55%),
                         rgba(15, 23, 42, 0.96);
             border: 1px solid rgba(30, 64, 175, 0.6);
             box-shadow: 0 24px 70px rgba(15, 23, 42, 0.9);
-            padding: 24px;
+            padding: 30px;
             width: 100%;
         }
 
         .tab-content {
             display: none;
-            min-height: 420px;
+            min-height: 500px;
             animation: fadeIn 0.35s ease;
         }
 
@@ -247,12 +248,12 @@
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .section-title i {
@@ -266,23 +267,24 @@
         }
 
         .section-subtitle {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-muted);
-            margin-bottom: 24px;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
 
         /* DEMO GRID */
         .theme-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
         .theme-card {
             position: relative;
             border-radius: 16px;
-            padding: 16px;
+            padding: 20px;
             background: radial-gradient(circle at top left, rgba(75, 85, 99, 0.28), transparent 60%),
                         rgba(15, 23, 42, 0.96);
             border: 1px solid rgba(148, 163, 184, 0.4);
@@ -314,49 +316,50 @@
         .theme-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .theme-icon {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             background: linear-gradient(135deg, #4f46e5, #22c55e);
             box-shadow: 0 8px 16px rgba(15, 23, 42, 0.8);
         }
 
         .theme-name {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
         .theme-desc {
             font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.5;
         }
 
         .theme-preview {
             border-radius: 12px;
             height: 80px;
-            margin: 14px 0 12px;
+            margin: 16px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 14px;
-            font-size: 0.9rem;
+            padding: 12px 16px;
+            font-size: 0.85rem;
             border: 1px solid rgba(148, 163, 184, 0.5);
             background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.35), transparent 45%),
                         rgba(15, 23, 42, 0.96);
         }
 
         .theme-preview-badge {
-            padding: 4px 11px;
+            padding: 4px 12px;
             border-radius: 999px;
             font-size: 0.8rem;
             border: 1px solid rgba(148, 163, 184, 0.7);
@@ -364,15 +367,15 @@
         }
 
         .btn {
-            margin-top: 4px;
+            margin-top: 8px;
             width: 100%;
-            border-radius: 999px;
-            padding: 9px 12px;
+            border-radius: 12px;
+            padding: 12px 16px;
             border: none;
             background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.5), transparent 65%),
                         linear-gradient(135deg, #4f46e5, #22c55e);
             color: #f9fafb;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
@@ -390,10 +393,10 @@
 
         /* STATUS BANNER */
         .status {
-            margin-top: 6px;
-            padding: 12px 16px;
-            border-radius: 999px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -408,26 +411,26 @@
 
         /* FEATURES SHORT */
         .features-row {
-            margin-top: 22px;
+            margin-top: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
         }
 
         .feature-chip {
             border-radius: 12px;
-            padding: 11px 13px;
+            padding: 16px;
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid rgba(51, 65, 85, 0.95);
             font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .feature-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 999px;
             display: flex;
             align-items: center;
@@ -440,28 +443,31 @@
         /* CUSTOM COLORS TAB */
         .two-columns {
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-            gap: 22px;
-            margin-top: 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
         }
 
         .column-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .color-picker-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
         }
 
         .color-picker {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 11px;
+            gap: 8px;
+            padding: 16px;
             border-radius: 12px;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid rgba(31, 41, 55, 0.9);
@@ -472,7 +478,7 @@
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .color-label i {
@@ -481,7 +487,7 @@
 
         .color-input {
             width: 100%;
-            height: 38px;
+            height: 40px;
             border-radius: 10px;
             border: 1px solid rgba(55, 65, 81, 0.95);
             background: #020617;
@@ -490,7 +496,7 @@
 
         .code-block {
             margin-top: 8px;
-            padding: 13px 15px;
+            padding: 16px;
             border-radius: 12px;
             background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), transparent 60%),
                         #020617;
@@ -499,15 +505,16 @@
             font-size: 0.85rem;
             color: #e5e7eb;
             overflow-x: auto;
+            position: relative;
         }
 
         .code-title {
-            font-size: 0.86rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 6px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .code-title i {
@@ -516,19 +523,39 @@
 
         .code-block pre {
             white-space: pre;
+            margin: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
         }
 
         /* USAGE & DOCS */
         .stacked-section {
             display: flex;
             flex-direction: column;
-            gap: 13px;
-            margin-top: 10px;
+            gap: 16px;
+            margin-top: 20px;
         }
 
         .section-card {
             border-radius: 14px;
-            padding: 14px;
+            padding: 20px;
             background: rgba(15, 23, 42, 0.96);
             border: 1px solid rgba(31, 41, 55, 0.95);
         }
@@ -537,8 +564,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.98rem;
+            margin-bottom: 12px;
+            font-size: 1rem;
             font-weight: 500;
         }
 
@@ -549,7 +576,8 @@
         .section-card-text {
             font-size: 0.9rem;
             color: var(--text-muted);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
         @keyframes fadeIn {
@@ -558,60 +586,68 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 960px) {
+        @media (max-width: 1024px) {
             .two-columns {
-                grid-template-columns: minmax(0, 1fr);
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .page-wrapper {
+                padding: 16px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
             }
         }
 
         @media (max-width: 768px) {
-            .page-wrapper {
-                padding: 16px 12px 32px;
-            }
-
             .header {
-                padding: 20px 16px 18px;
+                padding: 24px 20px;
             }
-
-            .header-subtitle {
-                max-width: 100%;
+            
+            .content-shell {
+                padding: 20px;
             }
-
+            
+            .theme-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .tabs-container {
                 width: 100%;
-                margin-top: 10px;
             }
-
+            
             .tabs {
                 width: 100%;
                 justify-content: space-between;
             }
-
+            
             .tab {
                 flex: 1;
                 justify-content: center;
-                padding-inline: 8px;
+                padding: 10px 12px;
                 font-size: 0.85rem;
-            }
-
-            .content-shell {
-                padding: 16px;
             }
         }
 
         @media (max-width: 480px) {
-            .theme-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
             .header h1 {
-                font-size: 2.1rem;
+                font-size: 1.8rem;
+            }
+            
+            .header-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
             }
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 7px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -658,11 +694,11 @@
                     </div>
                     <div class="header-chip">
                         <i class="fas fa-bolt"></i>
-                        100% Frontend · Không cần native SDK
+                        100% Frontend · No Native SDK
                     </div>
                     <div class="header-chip">
                         <i class="fas fa-palette"></i>
-                        Theming bằng JS Options
+                        JS Theming
                     </div>
                 </div>
 
@@ -679,7 +715,7 @@
                         </button>
                         <button class="tab" onclick="openTab(event, 'usage')">
                             <i class="fas fa-code"></i>
-                            Cách Dùng
+                            Usage
                         </button>
                         <button class="tab" onclick="openTab(event, 'docs')">
                             <i class="fas fa-book"></i>
@@ -799,29 +835,29 @@
                     <div class="feature-chip">
                         <div class="feature-icon"><i class="fas fa-robot"></i></div>
                         <div>
-                            <div style="font-size:0.95rem;">AI trên trình duyệt</div>
-                            <div style="font-size:0.82rem;color:var(--text-muted);">TensorFlow.js &amp; Face Landmarks</div>
+                            <div>AI trên trình duyệt</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">TensorFlow.js & Face Landmarks</div>
                         </div>
                     </div>
                     <div class="feature-chip">
                         <div class="feature-icon"><i class="fas fa-microphone"></i></div>
                         <div>
-                            <div style="font-size:0.95rem;">Voice Guide tiếng Việt</div>
-                            <div style="font-size:0.82rem;color:var(--text-muted);">Hướng dẫn người dùng bằng giọng nói</div>
+                            <div>Voice Guide tiếng Việt</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Hướng dẫn bằng giọng nói</div>
                         </div>
                     </div>
                     <div class="feature-chip">
                         <div class="feature-icon"><i class="fas fa-arrows-to-circle"></i></div>
                         <div>
-                            <div style="font-size:0.95rem;">Giữ mặt trong khung</div>
-                            <div style="font-size:0.82rem;color:var(--text-muted);">Chỉ chụp khi khuôn mặt chuẩn vị trí</div>
+                            <div>Giữ mặt trong khung</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Chỉ chụp khi khuôn mặt chuẩn vị trí</div>
                         </div>
                     </div>
                     <div class="feature-chip">
                         <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
                         <div>
-                            <div style="font-size:0.95rem;">Responsive</div>
-                            <div style="font-size:0.82rem;color:var(--text-muted);">Chạy tốt trên mobile &amp; desktop</div>
+                            <div>Responsive</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Mobile & Desktop</div>
                         </div>
                     </div>
                 </div>
@@ -880,7 +916,7 @@
                             </div>
                         </div>
 
-                        <button class="btn" style="margin-top: 14px;" onclick="testCustomColor()" type="button">
+                        <button class="btn" style="margin-top: 20px;" onclick="testCustomColor()" type="button">
                             <i class="fas fa-play"></i>
                             Chạy Demo với màu đang chọn
                         </button>
@@ -893,6 +929,7 @@
                                 <i class="fas fa-code"></i>
                                 Khởi tạo với màu custom
                             </div>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>const faceAuth = new FaceAuth({
   primaryColor: '#3a86ff',
   successColor: '#2ed573',
@@ -907,20 +944,24 @@
 await faceAuth.open();</code></pre>
                         </div>
 
-                        <div class="code-block" style="margin-top:10px;">
+                        <div class="code-block" style="margin-top:16px;">
                             <div class="code-title">
                                 <i class="fab fa-react"></i>
                                 React Example
                             </div>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>function FaceAuthButton() {
-  const handleAuth = async () =&gt; {
+  const handleAuth = async () => {
     const faceAuth = new FaceAuth({
       primaryColor: '#3a86ff',
       successColor: '#2ed573',
-      // ...
+      warningColor: '#ffa502',
+      errorColor: '#ff4757',
+      textColor: '#ffffff',
+      subtitleColor: '#b0b0b0'
     });
 
-    faceAuth.config.onCapture = (blob) =&gt; {
+    faceAuth.config.onCapture = (blob) => {
       console.log('Captured:', blob);
     };
 
@@ -956,9 +997,10 @@ await faceAuth.open();</code></pre>
                                 <span>CDN (HTML thuần)</span>
                             </div>
                             <div class="section-card-text">
-                                Thêm 3 script vào cuối trang HTML của bạn (TensorFlow.js, face-landmarks-detection, face-auth-library).
+                                Thêm 3 script vào cuối trang HTML của bạn.
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.min.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/face-auth-library@latest/dist/face-auth.min.js"&gt;&lt;/script&gt;</code></pre>
@@ -974,6 +1016,7 @@ await faceAuth.open();</code></pre>
                                 Dùng cho React, Vue, Next.js, v.v...
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>npm install face-auth-library
 npm install @tensorflow/tfjs
 npm install @tensorflow-models/face-landmarks-detection</code></pre>
@@ -986,6 +1029,7 @@ npm install @tensorflow-models/face-landmarks-detection</code></pre>
                                 <span>Quick Start · Vanilla JS</span>
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>&lt;button onclick="authenticateUser()"&gt;
   Xác Thực Khuôn Mặt
 &lt;/button&gt;
@@ -995,12 +1039,12 @@ async function authenticateUser() {
   try {
     const faceAuth = new FaceAuth();
 
-    faceAuth.config.onCapture = (imageBlob) =&gt; {
+    faceAuth.config.onCapture = (imageBlob) => {
       console.log('OK:', imageBlob);
       // uploadToServer(imageBlob);
     };
 
-    faceAuth.config.onError = (error) =&gt; {
+    faceAuth.config.onError = (error) => {
       console.error('Lỗi:', error);
     };
 
@@ -1021,20 +1065,21 @@ async function authenticateUser() {
                                 <span>React Hook Example</span>
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>import React, { useCallback } from 'react';
 
 function FaceAuthButton() {
-  const handleFaceAuth = useCallback(async () =&gt; {
+  const handleFaceAuth = useCallback(async () => {
     const faceAuth = new FaceAuth({
       detectionInterval: 150,
       voiceEnabled: true
     });
 
-    faceAuth.config.onCapture = (blob) =&gt; {
+    faceAuth.config.onCapture = (blob) => {
       console.log('Authenticated:', blob);
     };
 
-    faceAuth.config.onError = (error) =&gt; {
+    faceAuth.config.onError = (error) => {
       console.error('Error:', error);
     };
 
@@ -1050,6 +1095,41 @@ function FaceAuthButton() {
 }
 
 export default FaceAuthButton;</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <i class="fab fa-vuejs"></i>
+                                <span>Vue.js Example</span>
+                            </div>
+                            <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;template&gt;
+  &lt;button @click="handleFaceAuth"&gt;
+    &lt;i class="fas fa-camera"&gt;&lt;/i&gt;
+    Xác Thực Khuôn Mặt
+  &lt;/button&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  methods: {
+    async handleFaceAuth() {
+      const faceAuth = new FaceAuth({
+        voiceEnabled: true
+      });
+
+      faceAuth.config.onCapture = (blob) => {
+        console.log('Authenticated:', blob);
+      };
+
+      await faceAuth.open();
+    }
+  }
+};
+&lt;/script&gt;</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1073,6 +1153,7 @@ export default FaceAuthButton;</code></pre>
                                 <span>Constructor Options</span>
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>const faceAuth = new FaceAuth({
   // Detection
   detectionInterval: 200,
@@ -1101,7 +1182,7 @@ export default FaceAuthButton;</code></pre>
   onCapture: null,
   onClose: null,
   onError: null,
-  // voiceEnabled: true/false (nếu bạn thêm option này)
+  voiceEnabled: true
 });</code></pre>
                             </div>
                         </div>
@@ -1112,16 +1193,17 @@ export default FaceAuthButton;</code></pre>
                                 <span>Methods</span>
                             </div>
                             <div class="code-block">
-<pre><code>// Mở popup &amp; khởi tạo camera + model
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>// Mở popup & khởi tạo camera + model
 await faceAuth.open();
 
-// Đóng popup &amp; tắt camera
+// Đóng popup & tắt camera
 faceAuth.close();
 
 // Cập nhật config trong runtime
 faceAuth.updateConfig({
   progressStep: 2,
-  // ...
+  voiceEnabled: false
 });
 
 // Kiểm tra popup đang mở hay đã đóng
@@ -1137,7 +1219,8 @@ const opened = faceAuth.isOpen();</code></pre>
                                 <span>Callback · onCapture</span>
                             </div>
                             <div class="code-block">
-<pre><code>faceAuth.config.onCapture = (imageBlob) =&gt; {
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>faceAuth.config.onCapture = (imageBlob) => {
   // imageBlob là Blob ảnh JPEG
   const formData = new FormData();
   formData.append('faceImage', imageBlob, 'face.jpg');
@@ -1156,9 +1239,11 @@ const opened = faceAuth.isOpen();</code></pre>
                                 <span>Callback · onError</span>
                             </div>
                             <div class="code-block">
-<pre><code>faceAuth.config.onError = (error) =&gt; {
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>faceAuth.config.onError = (error) => {
   console.error('FaceAuth error:', error.message);
-  // Ví dụ: hiện toast
+  // Hiển thị thông báo lỗi cho người dùng
+  alert('Lỗi xác thực: ' + error.message);
 };</code></pre>
                             </div>
                         </div>
@@ -1169,8 +1254,10 @@ const opened = faceAuth.isOpen();</code></pre>
                                 <span>Callback · onClose</span>
                             </div>
                             <div class="code-block">
-<pre><code>faceAuth.config.onClose = () =&gt; {
-  console.log('Popup đã đóng, camera &amp; model đã cleanup');
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>faceAuth.config.onClose = () => {
+  console.log('Popup đã đóng, camera & model đã cleanup');
+  // Thực hiện hành động sau khi đóng
 };</code></pre>
                             </div>
                         </div>
@@ -1181,11 +1268,12 @@ const opened = faceAuth.isOpen();</code></pre>
                                 <span>Advanced · Update Runtime Config</span>
                             </div>
                             <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre><code>const faceAuth = new FaceAuth();
 await faceAuth.open();
 
-// Sau 3s tăng tốc độ progress &amp; tắt voice
-setTimeout(() =&gt; {
+// Sau 3s tăng tốc độ progress & tắt voice
+setTimeout(() => {
   faceAuth.updateConfig({
     progressStep: 2,
     voiceEnabled: false
@@ -1224,6 +1312,27 @@ setTimeout(() =&gt; {
         }
     }
 
+    // COPY CODE FUNCTION
+    function copyCode(button) {
+        const codeBlock = button.parentElement;
+        const code = codeBlock.querySelector('code').textContent;
+        
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.background = 'rgba(34, 197, 94, 0.2)';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.5)';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = 'rgba(255, 255, 255, 0.1)';
+                button.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+
     function updateStatus(message) {
         const el = document.getElementById('status');
         if (el) {
@@ -1232,6 +1341,12 @@ setTimeout(() =&gt; {
     }
 
     async function setupAndOpen(faceAuth, themeName) {
+        // ĐẢM BẢO GIỌNG NÓI LUÔN BẬT
+        faceAuth.voiceEnabled = true;
+        if (faceAuth.config) {
+            faceAuth.config.voiceEnabled = true;
+        }
+        
         faceAuth.config.onCapture = function (imageBlob) {
             updateStatus(
                 `<i class="fas fa-check-circle" style="color:${getComputedStyle(document.documentElement).getPropertyValue('--success') || '#10b981'}"></i>
@@ -1345,6 +1460,54 @@ setTimeout(() =&gt; {
             updateStatus('<i class="fas fa-exclamation-triangle"></i><span> Lỗi: ' + error.message + '</span>');
         }
     }
+
+    // THÊM HÀM KIỂM TRA GIỌNG NÓI
+    function testVoice() {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance("Xin chào! Chúc bạn một ngày tốt lành.");
+            utterance.lang = 'vi-VN';
+            utterance.rate = 1.0;
+            utterance.volume = 0.8;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const viVoice = voices.find(voice => 
+                voice.lang.includes('vi') || 
+                voice.lang.includes('VN') ||
+                voice.name.toLowerCase().includes('vietnamese')
+            );
+            
+            if (viVoice) {
+                utterance.voice = viVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+            updateStatus('<i class="fas fa-volume-up"></i><span> Đang kiểm tra giọng nói...</span>');
+        } else {
+            updateStatus('<i class="fas fa-volume-mute"></i><span> Trình duyệt không hỗ trợ giọng nói.</span>');
+        }
+    }
+
+    // TỰ ĐỘNG KIỂM TRA GIỌNG NÓI KHI TRANG LOAD
+    window.addEventListener('load', function() {
+        // Test giọng nói ngay khi trang load
+        setTimeout(testVoice, 1000);
+        
+        // Thêm nút test giọng nói vào header
+        const headerActions = document.querySelector('.header-actions');
+        if (headerActions) {
+            const voiceTestBtn = document.createElement('div');
+            voiceTestBtn.className = 'header-chip';
+            voiceTestBtn.style.cursor = 'pointer';
+            voiceTestBtn.style.background = 'rgba(34, 197, 94, 0.2)';
+            voiceTestBtn.style.border = '1px solid rgba(34, 197, 94, 0.5)';
+            voiceTestBtn.innerHTML = `
+                <i class="fas fa-volume-up"></i>
+                Test Giọng Nói
+            `;
+            voiceTestBtn.onclick = testVoice;
+            headerActions.appendChild(voiceTestBtn);
+        }
+    });
 </script>
 </body>
 </html>
