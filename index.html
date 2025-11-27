@@ -1397,13 +1397,13 @@ setTimeout(() => {
 <script>
     // NHẠC NỀN
     let backgroundMusic = document.getElementById('backgroundMusic');
-    let isMusicPlaying = false;
+    let isMusicPlaying = true;
     let musicToggle = document.getElementById('musicToggle');
 
     // Khởi tạo nhạc nền
     function initBackgroundMusic() {
         try {
-            backgroundMusic.volume = 0.1; // Âm lượng nhỏ
+            backgroundMusic.volume = 0.3; // Âm lượng nhỏ
             backgroundMusic.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicButton();
