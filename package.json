@@ -21,7 +21,11 @@
     "url": "https://github.com/fdhhhdjd/face-auth-library"
   },
   "peerDependencies": {
-    "@tensorflow/tfjs": "^3.18.0",
-    "@tensorflow-models/face-landmarks-detection": "^0.0.1"
+    "@tensorflow-models/face-landmarks-detection": "^0.0.1",
+    "@tensorflow/tfjs": "^3.18.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.103.0",
+    "webpack-cli": "^6.0.1"
   }
 }
