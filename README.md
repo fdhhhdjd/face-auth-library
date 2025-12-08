@@ -1,4 +1,4 @@
-# Face Auth Library
+# Face Auth Library by Code Web Khong Kho
 
 Thư viện xác thực khuôn mặt thông minh, hỗ trợ tiếng Việt.  
 Dùng để tích hợp xác thực khuôn mặt cho các sản phẩm web (KYC, check-in, chấm công, v.v.).
